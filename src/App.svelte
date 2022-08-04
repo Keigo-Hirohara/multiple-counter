@@ -1,59 +1,36 @@
 <script lang="ts">
-  import Counter from './Counter.svelte';
-  let index = 0;
+  import Counter from './components/Counter.svelte';
+  import { countersData } from './countersData';
+  import type { CounterType, RemoveCounterType } from './types';
 
-  // カウンターの状態が格納される配列
-  let counters = [
-    {
-      index: 0,
-      count: 0,
-      title: 'new',
-    },
-  ];
+  const addNewCounter = () => {
+    $countersData = [
+      ...$countersData,
+      {
+        count: 0,
+        title: 'new',
+      },
+    ];
+  };
 
-  // 子コンポーネントから渡された値を、配列に反映させる処理群。
-  function addNewCounter() {
-    index += 1;
-    counters = [...counters, { index, count: 0, title: 'new' }];
-  }
-  function deleteCounter(event) {
-    counters.splice(event.detail.index, 1);
-    counters = counters;
-  }
-  function plus(event) {
-    counters[event.detail.index].count = event.detail.count;
-  }
-  function minus(event) {
-    counters[event.detail.index].count = event.detail.count;
-  }
-  function zero(event) {
-    counters[event.detail.index].count = event.detail.count;
-  }
-  function updateTitle(event) {
-    counters[event.detail.index].title = event.detail.title;
-  }
+  const removeCounter: RemoveCounterType = (counterIndex) => {
+    $countersData.splice(counterIndex, 1);
+    $countersData = $countersData;
+  };
 
-  // 値の更新がある都度に、合計値とタイトル列挙を更新。
-  $: total = counters.reduce((sum, item) => {
+  $: total = $countersData.reduce((sum: number, item: CounterType): number => {
     return sum + item.count;
   }, 0);
 
-  $: titleList = counters.map((x) => {
+  $: titleList = $countersData.map((x: CounterType): string => {
     return x.title;
   });
 </script>
 
 <main>
   <h1>Multiple Counter</h1>
-  {#each counters as counter, index (counter.index)}
-    <Counter
-      {index}
-      on:plus={plus}
-      on:minus={minus}
-      on:zero={zero}
-      on:delete={deleteCounter}
-      on:title={updateTitle}
-    />
+  {#each $countersData as counter, index}
+    <Counter {index} on:remove={() => removeCounter(index)} />
   {/each}
   <button on:click={addNewCounter}>New Counter</button>
   <p>title list: {titleList}</p>
