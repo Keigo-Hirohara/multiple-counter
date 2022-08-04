@@ -3,9 +3,3 @@ export type counter = {
   count: number;
   title: string;
 };
-
-export enum operationType {
-  Plus,
-  Minus,
-  Reset,
-}
