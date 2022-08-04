@@ -1,5 +1,5 @@
 export type counter = {
-  index: number;
+  id: number;
   count: number;
   title: string;
 };

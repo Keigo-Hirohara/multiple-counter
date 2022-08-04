@@ -4,14 +4,14 @@
   import type { counter } from './types';
 
   function addNewCounter(): void {
-    let lastIndex: number =
+    let newId: number =
       $countersData.length == 0
         ? 0
-        : $countersData[$countersData.length - 1].index + 1;
+        : $countersData[$countersData.length - 1].id + 1;
     $countersData = [
       ...$countersData,
       {
-        index: lastIndex,
+        id: newId,
         count: 0,
         title: 'new',
       },
@@ -29,7 +29,7 @@
 
 <main>
   <h1>Multiple Counter</h1>
-  {#each $countersData as counter, index (counter.index)}
+  {#each $countersData as counter, index (counter.id)}
     <Counter {index} />
   {/each}
   <button on:click={addNewCounter}>New Counter</button>
