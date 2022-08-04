@@ -1,6 +1,9 @@
 <script lang="ts">
   import { countersData } from '../countersData';
+  import { createEventDispatcher } from 'svelte';
   export let index: number;
+  const dispatch = createEventDispatcher();
+  const remove = () => dispatch('remove');
 
   function plusCount(): void {
     $countersData[index].count += 1;
@@ -23,12 +26,7 @@
   <button on:click={plusCount}>+</button>
   <button on:click={minusCount}>-</button>
   <button on:click={resetCount}>reset</button>
-  <button
-    on:click={() => {
-      $countersData.splice(index, 1);
-      $countersData = $countersData;
-    }}>✖️</button
-  >
+  <button on:click={remove}>✖️</button>
 </div>
 
 <style>
